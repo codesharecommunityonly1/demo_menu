@@ -1,164 +1,174 @@
 import gradio as gr
 
-foods = [
+menu_data = [
     {
-        "id": "biryani",
-        "name": "Chicken Biryani",
-        "price": 299,
-        "original_price": 399,
-        "description": "Aromatic basmati rice with tender chicken, saffron, and traditional spices.",
-        "category": "Indian Biryani",
-        "rating": 4.9,
-        "reviews": 234,
-        "badge": "Chef's Special",
-        "image": "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400",
+        "id": 1,
+        "name": "Bruschetta",
+        "category": "Appetizers",
+        "price": 8.99,
+        "description": "Toasted bread topped with fresh tomatoes, garlic, basil, and olive oil.",
+        "image": "https://images.unsplash.com/photo-1572695157366-5e585ab2b69f?w=300",
     },
     {
-        "id": "dal_makhani",
-        "name": "Dal Makhani",
-        "price": 199,
-        "original_price": 249,
-        "description": "Creamy black lentils slow-cooked with kidney beans, tomato, and aromatic spices.",
-        "category": "Indian Curries",
-        "rating": 4.8,
-        "reviews": 189,
-        "badge": "Popular",
-        "image": "https://images.unsplash.com/photo-1546833999-b9f581a2026c?w=400",
+        "id": 2,
+        "name": "Caesar Salad",
+        "appetizers": "Appetizers",
+        "price": 10.99,
+        "description": "Crisp romaine lettuce with caesar dressing, parmesan, and croutons.",
+        "image": "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?w=300",
     },
     {
-        "id": "paneer_tikka",
-        "name": "Paneer Tikka",
-        "price": 279,
-        "original_price": 349,
-        "description": "Cubes of cottage cheese marinated in yogurt and spices, grilled to perfection.",
-        "category": "Indian Tandoor",
-        "rating": 4.7,
-        "reviews": 156,
-        "badge": "Vegetarian",
-        "image": "https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400",
+        "id": 3,
+        "name": "Garlic Bread",
+        "category": "Appetizers",
+        "price": 6.99,
+        "description": "Warm bread with garlic butter and herbs.",
+        "image": "https://images.unsplash.com/photo-1619535860434-ba1d8fa12536?w=300",
     },
     {
-        "id": "samosa",
-        "name": "Crispy Samosa (3 pcs)",
-        "price": 99,
-        "original_price": 149,
-        "description": "Golden fried pastries filled with spiced potatoes and peas.",
-        "category": "Indian Snacks",
-        "rating": 4.6,
-        "reviews": 312,
-        "badge": "Bestseller",
-        "image": "https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400",
+        "id": 4,
+        "name": "Grilled Salmon",
+        "category": "Mains",
+        "price": 24.99,
+        "description": "Fresh Atlantic salmon with lemon herb butter and seasonal vegetables.",
+        "image": "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300",
     },
     {
-        "id": "butter_chicken",
-        "name": "Butter Chicken",
-        "price": 329,
-        "original_price": 399,
-        "description": "Tender chicken in creamy tomato-based gravy with butter and fenugreek.",
-        "category": "Indian Curries",
-        "rating": 4.9,
-        "reviews": 567,
-        "badge": "Signature Dish",
-        "image": "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400",
+        "id": 5,
+        "name": "Chicken Parmesan",
+        "category": "Mains",
+        "price": 18.99,
+        "description": "Breaded chicken breast with marinara sauce and melted mozzarella.",
+        "image": "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=300",
     },
     {
-        "id": "masala_dosa",
-        "name": "Masala Dosa",
-        "price": 199,
-        "original_price": 249,
-        "description": "Crispy rice and lentil crepe filled with spiced potato filling.",
-        "category": "South Indian",
-        "rating": 4.7,
-        "reviews": 234,
-        "badge": "Healthy",
-        "image": "https://images.unsplash.com/photo-1668236543090-82eba64ee968?w=400",
+        "id": 6,
+        "name": "Beef Steak",
+        "category": "Mains",
+        "price": 29.99,
+        "description": "8oz ribeye steak with peppercorn sauce and mashed potatoes.",
+        "image": "https://images.unsplash.com/photo-1600891964092-4316c288032e?w=300",
     },
     {
-        "id": "gulab_jamun",
-        "name": "Gulab Jamun (4 pcs)",
-        "price": 99,
-        "original_price": 129,
-        "description": "Deep-fried milk dumplings soaked in rose-flavored sugar syrup.",
-        "category": "Indian Desserts",
-        "rating": 4.9,
-        "reviews": 456,
-        "badge": "Dessert Favorite",
-        "image": "https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?w=400",
+        "id": 7,
+        "name": "Pasta Primavera",
+        "category": "Mains",
+        "price": 16.99,
+        "description": "Penne pasta with fresh vegetables in garlic olive oil.",
+        "image": "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?w=300",
     },
     {
-        "id": "lassi",
-        "name": "Sweet Lassi",
-        "price": 79,
-        "original_price": 99,
-        "description": "Creamy yogurt drink blended with sugar and cardamom.",
-        "category": "Indian Drinks",
-        "rating": 4.7,
-        "reviews": 234,
-        "badge": "Refreshing",
-        "image": "https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400",
+        "id": 8,
+        "name": "Chocolate Lava Cake",
+        "category": "Desserts",
+        "price": 9.99,
+        "description": "Warm chocolate cake with molten center and vanilla ice cream.",
+        "image": "https://images.unsplash.com/photo-1624353365286-3f8d62daad51?w=300",
+    },
+    {
+        "id": 9,
+        "name": "Tiramisu",
+        "category": "Desserts",
+        "price": 8.99,
+        "description": "Classic Italian dessert with espresso-soaked ladyfingers and mascarpone.",
+        "image": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=300",
+    },
+    {
+        "id": 10,
+        "name": "Cheesecake",
+        "category": "Desserts",
+        "price": 7.99,
+        "description": "Creamy New York style cheesecake with berry compote.",
+        "image": "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=300",
     },
 ]
 
-categories = [
-    "All",
-    "Indian Biryani",
-    "Indian Curries",
-    "Indian Tandoor",
-    "Indian Snacks",
-    "South Indian",
-    "Indian Desserts",
-    "Indian Drinks",
-]
+categories = ["All", "Appetizers", "Mains", "Desserts"]
 
 css = """
-.header { background: linear-gradient(135deg, #ff6b35, #ff8c42); padding: 20px; text-align: center; color: white; }
-.header h1 { margin: 0; font-size: 2.5em; }
-.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
-.food-card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; backdrop-filter: blur(10px); }
-.food-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
-.food-card h3 { color: #f7c59f; margin: 10px 0 5px; }
-.food-card .price { color: #ff6b35; font-size: 1.4em; font-weight: bold; }
-.food-card .original { text-decoration: line-through; opacity: 0.6; margin-left: 10px; }
-.rating { color: #ffd700; }
+.header { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 30px; text-align: center; color: white; }
+.header h1 { margin: 0; font-size: 2.8em; }
+.header p { margin: 10px 0 0; font-size: 1.2em; opacity: 0.9; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 25px; }
+.food-card { 
+    background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05)); 
+    border-radius: 20px; padding: 20px; 
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.food-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+.food-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; }
+.food-card .badge { 
+    display: inline-block; background: linear-gradient(135deg, #ff6b35, #ff8c42); 
+    padding: 5px 12px; border-radius: 20px; font-size: 12px; margin: 10px 0; 
+}
+.food-card h3 { color: #f7c59f; margin: 10px 0 5px; font-size: 1.3em; }
+.food-card .desc { color: #ccc; font-size: 14px; line-height: 1.5; margin: 10px 0; }
+.food-card .price-row { display: flex; align-items: center; gap: 10px; margin: 15px 0; }
+.food-card .price { color: #ff6b35; font-size: 1.5em; font-weight: bold; }
+.food-card .original { color: #888; text-decoration: line-through; }
+.food-card .rating { color: #ffd700; font-size: 14px; }
+.search-box { padding: 20px; background: rgba(255,255,255,0.05); margin: 10px; border-radius: 15px; }
 """
 
 
-def get_menu(category, search):
-    filtered = foods
+def filter_menu(category, search):
+    filtered = menu_data
+
     if category and category != "All":
-        filtered = [f for f in filtered if f["category"] == category]
+        filtered = [item for item in filtered if item.get("category") == category]
+
     if search:
         search = search.lower()
-        filtered = [f for f in filtered if search in f["name"].lower()]
+        filtered = [
+            item
+            for item in filtered
+            if search in item.get("name", "").lower()
+            or search in item.get("description", "").lower()
+        ]
+
+    if not filtered:
+        return '<div style="text-align:center;color:#888;padding:40px;font-size:18px;">No items found 🍽️</div>'
 
     html = '<div class="menu-grid">'
-    for f in filtered:
+    for item in filtered:
         html += f'''
         <div class="food-card">
-            <img src="{f["image"]}" alt="{f["name"]}">
-            <span style="background:#ff6b35;padding:5px 10px;border-radius:10px;font-size:12px">{f["badge"]}</span>
-            <h3>{f["name"]}</h3>
-            <p>{f["description"][:60]}...</p>
-            <span class="price">${f["price"]}</span><span class="original">${f["original_price"]}</span>
-            <div class="rating">★ {f["rating"]} ({f["reviews"]} reviews)</div>
+            <img src="{item["image"]}" alt="{item["name"]}">
+            <span class="badge">{item["category"]}</span>
+            <h3>{item["name"]}</h3>
+            <p class="desc">{item["description"]}</p>
+            <div class="price-row">
+                <span class="price">${item["price"]:.2f}</span>
+            </div>
         </div>'''
     html += "</div>"
     return html
 
 
-with gr.Blocks(css=css, title="DIGITAL 3D MENU") as demo:
-    gr.HTML(
-        '<div class="header"><h1>🍛 DIGITAL 3D MENU</h1><p>Interactive Indian Food Experience</p></div>'
-    )
+with gr.Blocks(css=css, title="Restaurant Menu") as demo:
+    gr.HTML("""
+        <div class="header">
+            <h1>🍽️ Restaurant Menu</h1>
+            <p>Delicious dishes for every taste</p>
+        </div>
+    """)
 
     with gr.Row():
-        cat_dd = gr.Dropdown(choices=categories, value="All", label="Category")
-        search_in = gr.Textbox(placeholder="Search food...", label="Search")
+        with gr.Column(scale=1):
+            category_dd = gr.Dropdown(
+                choices=categories, value="All", label="Category", interactive=True
+            )
+        with gr.Column(scale=2):
+            search_input = gr.Textbox(
+                placeholder="Search dishes...", label="Search", interactive=True
+            )
 
-    menu_out = gr.HTML()
+    menu_output = gr.HTML()
 
-    cat_dd.change(get_menu, [cat_dd, search_in], menu_out)
-    search_in.change(get_menu, [cat_dd, search_in], menu_out)
-    demo.load(lambda: get_menu("All", ""), None, menu_out)
+    category_dd.change(filter_menu, [category_dd, search_input], menu_output)
+    search_input.change(filter_menu, [category_dd, search_input], menu_output)
+    demo.load(lambda: filter_menu("All", ""), None, menu_output)
 
 demo.launch()

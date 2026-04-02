@@ -1,63 +1,48 @@
 ---
-title: DIGITAL 3D MENU
-emoji: 🍛
+title: Restaurant Menu
+emoji: 🍽️
 colorFrom: red
-colorTo: blue
+colorTo: orange
 sdk: gradio
 sdk_version: "5.0.0"
 app_file: app.py
 pinned: false
 tags:
 - food
+- restaurant
 - menu
-- indian-cuisine
 - gradio
 - web-app
 license: mit
 ---
 
-# DIGITAL 3D MENU 🍛
+# 🍽️ Restaurant Menu
 
-Interactive Indian Food Menu for restaurants.
+An elegant restaurant menu built with Gradio.
 
-## Projects
+## Features
 
-### 1. Gradio App (Hugging Face)
-- `app.py` - Gradio web interface
-- `requirements.txt` - Dependencies
+- **3 Categories**: Appetizers, Mains, Desserts
+- **Search**: Find your favorite dishes
+- **Beautiful UI**: Modern gradient design with cards
+- **Responsive**: Works on all devices
 
-### 2. React Client (Local)
-- `client/` - React + Vite frontend
-- `server/` - Node.js Express API
+## Menu Items
 
-## Running
+| Category | Dishes |
+|----------|--------|
+| Appetizers | Bruschetta, Caesar Salad, Garlic Bread |
+| Mains | Grilled Salmon, Chicken Parmesan, Beef Steak, Pasta Primavera |
+| Desserts | Chocolate Lava Cake, Tiramisu, Cheesecake |
 
-**Gradio (Hugging Face):**
-```bash
-pip install gradio
-python app.py
-```
+## Usage
 
-**React + Node:**
-```bash
-# Server
-cd server && npm install && npm start
+The app allows you to:
+- Filter by category (All/Appetizers/Mains/Desserts)
+- Search for specific dishes
+- View dish descriptions and prices
 
-# Client  
-cd client && npm install && npm run dev
-```
+## Tech Stack
 
-## Food Categories
-
-| Category | Items |
-|----------|-------|
-| Indian Biryani | Chicken Biryani |
-| Indian Curries | Dal Makhani, Butter Chicken, Palak Paneer |
-| Indian Tandoor | Paneer Tikka, Tandoori Chicken, Chicken Tikka |
-| Indian Snacks | Samosa, Papdi Chaat |
-| South Indian | Masala Dosa, Idli Sambar |
-| Indian Desserts | Gulab Jamun, Rasgulla |
-
-## License
-
-MIT
+- **Gradio 5.x** - UI Framework
+- **HTML/CSS** - Custom styling
