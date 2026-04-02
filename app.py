@@ -139,7 +139,7 @@ def get_menu(category, search):
             <span style="background:#ff6b35;padding:5px 10px;border-radius:10px;font-size:12px">{f["badge"]}</span>
             <h3>{f["name"]}</h3>
             <p>{f["description"][:60]}...</p>
-            <span class="price">₹{f["price"]}</span><span class="original">₹{f["original_price"]}</span>
+            <span class="price">${f["price"]}</span><span class="original">${f["original_price"]}</span>
             <div class="rating">★ {f["rating"]} ({f["reviews"]} reviews)</div>
         </div>'''
     html += "</div>"
