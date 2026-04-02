@@ -2,7 +2,7 @@
 title: Restaurant Menu
 emoji: 🍽️
 colorFrom: red
-colorTo: orange
+colorTo: yellow
 sdk: gradio
 sdk_version: "5.0.0"
 app_file: app.py
