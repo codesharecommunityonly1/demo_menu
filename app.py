@@ -1,10 +1,9 @@
 import gradio as gr
 
 
-def view_menu():
-    return "Welcome to our Restaurant Menu! 🍽️"
+def hello():
+    return "Hello! Menu coming soon."
 
 
-demo = gr.Interface(fn=view_menu, inputs=None, outputs="text")
-
+demo = gr.Interface(fn=hello, inputs=None, outputs="text")
 demo.launch()
