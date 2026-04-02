@@ -1,0 +1,163 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary: #ff5722;
+  --secondary: #ff9800;
+  --accent: #ff7043;
+  --dark: #0a0a0a;
+  --card: #121212;
+  --surface: #1a1a1a;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--dark);
+  color: white;
+  overflow-x: hidden;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--card);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+/* Glass Effect */
+.glass {
+  background: rgba(18, 18, 18, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 87, 34, 0.1);
+}
+
+.glass-card {
+  background: linear-gradient(145deg, #1a1a1a 0%, #0d0d0d 100%);
+  border: 1px solid rgba(255, 87, 34, 0.15);
+  transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 87, 34, 0.5);
+  box-shadow: 0 20px 60px rgba(255, 87, 34, 0.15);
+  transform: translateY(-4px);
+}
+
+/* Buttons */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  box-shadow: 0 10px 30px rgba(255, 87, 34, 0.3);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(255, 87, 34, 0.5);
+}
+
+/* Category Button */
+.category-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.category-btn:hover {
+  background: rgba(255, 87, 34, 0.2);
+  border-color: var(--primary);
+}
+
+.category-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+/* Hero Gradient */
+.hero-gradient {
+  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(255, 87, 34, 0.25), transparent);
+}
+
+.mesh-bg {
+  background-image: radial-gradient(rgba(255, 87, 34, 0.1) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Glow Text */
+.glow-text {
+  text-shadow: 0 0 30px rgba(255, 87, 34, 0.5);
+}
+
+/* Food Image */
+.food-img {
+  transition: transform 0.5s ease;
+}
+
+.food-card:hover .food-img {
+  transform: scale(1.1);
+}
+
+/* Modal Animation */
+.modal-3d {
+  animation: modalPop 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  border: 3px solid rgba(255, 87, 34, 0.1);
+  border-top: 3px solid var(--primary);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Toast */
+.toast {
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3D Canvas */
+.canvas-container {
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+}
+
+.canvas-container:active {
+  cursor: grabbing;
+}

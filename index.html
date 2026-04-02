@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Food Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-panel: rgba(15, 15, 15, 0.97);
+            --accent: #ff6b35;
+            --accent-secondary: #f7c548;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.9) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: var(--text-secondary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 50px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-btn:hover {
+            background: rgba(255,107,53,0.15);
+            border-color: var(--accent);
+        }
+
+        .cart-count {
+            background: var(--accent);
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cart-count.hidden {
+            display: none;
+        }
+
+        .main-container {
+            padding-top: 120px;
+            padding-bottom: 60px;
+            min-height: 100vh;
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 0 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .food-card {
+            position: relative;
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .food-card:nth-child(1) { animation-delay: 0.1s; }
+        .food-card:nth-child(2) { animation-delay: 0.2s; }
+        .food-card:nth-child(3) { animation-delay: 0.3s; }
+        .food-card:nth-child(4) { animation-delay: 0.4s; }
+        .food-card:nth-child(5) { animation-delay: 0.5s; }
+        .food-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .food-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 30%, rgba(255,107,53,0.08) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .food-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,107,53,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(255,107,53,0.1);
+        }
+
+        .food-card:hover::before {
+            opacity: 1;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #0d0d0d 100%);
+        }
+
+        .canvas-container canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .food-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .food-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .food-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .food-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .tap-hint {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.7;
+        }
+
+        .tap-hint::before {
+            content: '👆';
+            font-size: 12px;
+        }
+
+        .detail-panel {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 90vw;
+            height: 100vh;
+            background: var(--bg-panel);
+            z-index: 200;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+        }
+
+        .detail-panel.active {
+            right: 0;
+        }
+
+        .panel-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .panel-close:hover {
+            background: rgba(255,107,53,0.2);
+            border-color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        .panel-content {
+            padding: 40px 35px;
+        }
+
+        .panel-3d-view {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #0d0d0d 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .panel-3d-view canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .panel-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .panel-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .panel-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .ingredients-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+        }
+
+        .ingredients-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .ingredient-tag {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .ingredient-tag:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 18px 30px;
+            background: linear-gradient(135deg, var(--accent) 0%, #ff8c5a 100%);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(255,107,53,0.4);
+        }
+
+        .add-to-cart-btn:active {
+            transform: translateY(0);
+        }
+
+        .panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 150;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .panel-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .tagline {
+                display: none;
+            }
+
+            .food-grid {
+                padding: 0 20px;
+                gap: 20px;
+            }
+
+            .canvas-container {
+                height: 220px;
+            }
+
+            .panel-content {
+                padding: 30px 25px;
+            }
+
+            .panel-name {
+                font-size: 28px;
+            }
+
+            .panel-price {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <div class="logo">Gustos<span>.</span></div>
+            <div class="tagline">Experience Food in 3D</div>
+        </div>
+        <button class="cart-btn">
+            <span>🛒</span>
+            Cart
+            <span class="cart-count hidden" id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main class="main-container">
+        <div class="food-grid" id="foodGrid"></div>
+    </main>
+
+    <div class="panel-overlay" id="panelOverlay"></div>
+    <div class="detail-panel" id="detailPanel">
+        <button class="panel-close" id="panelClose">×</button>
+        <div class="panel-content">
+            <div class="panel-3d-view" id="panel3DView"></div>
+            <h2 class="panel-name" id="panelName"></h2>
+            <div class="panel-price" id="panelPrice"></div>
+            <p class="panel-desc" id="panelDesc"></p>
+            <div class="ingredients-title">Ingredients</div>
+            <div class="ingredients-list" id="ingredientsList"></div>
+            <button class="add-to-cart-btn" id="addToCartBtn">
+                <span>🛒</span>
+                Add to Cart
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        const foods = [
+            {
+                id: 'burger',
+                name: 'Classic Smash Burger',
+                price: '$14.99',
+                description: 'Juicy beef patty with melted American cheese, crisp lettuce, ripe tomato, and our special sauce on a toasted brioche bun.',
+                ingredients: ['Beef Patty', 'American Cheese', 'Lettuce', 'Tomato', 'Brioche Bun', 'Special Sauce', 'Pickles', 'Onion'],
+                color: 0xd4a056,
+                type: 'burger'
+            },
+            {
+                id: 'pizza',
+                name: 'Artisan Margherita',
+                price: '$18.99',
+                description: 'Wood-fired pizza with San Marzano tomato sauce, fresh mozzarella di bufala, fragrant basil, and extra virgin olive oil.',
+                ingredients: ['Tomato Sauce', 'Mozzarella', 'Fresh Basil', 'Olive Oil', 'Pizza Dough'],
+                color: 0xf5deb3,
+                type: 'pizza'
+            },
+            {
+                id: 'sushi',
+                name: 'Dragon Roll',
+                price: '$16.99',
+                description: 'Eel and cucumber wrapped in sushi rice, topped with avocado and sesame seeds, served with spicy mayo and eel sauce.',
+                ingredients: ['Eel', 'Cucumber', 'Avocado', 'Sushi Rice', 'Nori', 'Sesame Seeds', 'Spicy Mayo'],
+                color: 0x2d5a27,
+                type: 'sushi'
+            },
+            {
+                id: 'donut',
+                name: 'Glazed Donut',
+                price: '$4.99',
+                description: 'Freshly fried doughnut with our signature vanilla bean glaze, topped with colorful sprinkles and a hint of cinnamon.',
+                ingredients: ['Flour', 'Sugar', 'Vanilla Glaze', 'Sprinkles', 'Cinnamon', 'Yeast'],
+                color: 0xcd853f,
+                type: 'donut'
+            },
+            {
+                id: 'coffee',
+                name: 'Caramel Macchiato',
+                price: '$6.99',
+                description: 'Velvety steamed milk with rich espresso, vanilla syrup, and a caramel drizzle creates the perfect balance of sweet and bold.',
+                ingredients: ['Espresso', 'Steamed Milk', 'Vanilla Syrup', 'Caramel Drizzle'],
+                color: 0x8b4513,
+                type: 'coffee'
+            },
+            {
+                id: 'icecream',
+                name: 'Strawberry Sundae',
+                price: '$8.99',
+                description: 'Three scoops of premium strawberry ice cream with whipped cream, chocolate sauce, cherry, and crunchy nuts.',
+                ingredients: ['Strawberry Ice Cream', 'Whipped Cream', 'Chocolate Sauce', 'Cherry', 'Nuts'],
+                color: 0xffb6c1,
+                type: 'icecream'
+            }
+        ];
+
+        let cartCount = 0;
+        let activeScene = null;
+        let activeControls = null;
+        let selectedFood = null;
+
+        function createFoodGeometry(type, color) {
+            const group = new THREE.Group();
+            
+            switch(type) {
+                case 'burger':
+                    const bunTop = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.8, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2),
+                        new THREE.MeshStandardMaterial({ color: 0xd4a056, roughness: 0.8 })
+                    );
+                    bunTop.position.y = 0.5;
+                    group.add(bunTop);
+
+                    const lettuce = new THREE.Mesh(
+                        new THREE.TorusGeometry(0.75, 0.12, 8, 32),
+                        new THREE.MeshStandardMaterial({ color: 0x4a9c2d, roughness: 0.6 })
+                    );
+                    lettuce.rotation.x = Math.PI / 2;
+                    lettuce.position.y = 0.35;
+                    group.add(lettuce);
+
+                    const patty = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.7, 0.75, 0.2, 32),
+                        new THREE.MeshStandardMaterial({ color: 0x5c4033, roughness: 0.7 })
+                    );
+                    patty.position.y = 0.15;
+                    group.add(patty);
+
+                    const cheese = new THREE.Mesh(
+                        new THREE.BoxGeometry(1.4, 0.05, 1.4),
+                        new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.5, emissive: 0x222200 })
+                    );
+                    cheese.position.y = 0.28;
+                    group.add(cheese);
+
+                    const tomato = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.6, 0.65, 0.08, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xdc143c, roughness: 0.4 })
+                    );
+                    tomato.position.y = 0.4;
+                    group.add(tomato);
+
+                    const bunBottom = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.8, 0.8, 0.15, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xd4a056, roughness: 0.8 })
+                    );
+                    bunBottom.position.y = -0.05;
+                    group.add(bunBottom);
+                    break;
+
+                case 'pizza':
+                    const pizzaBase = new THREE.Mesh(
+                        new THREE.CylinderGeometry(1, 1, 0.08, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xf5deb3, roughness: 0.9 })
+                    );
+                    group.add(pizzaBase);
+
+                    const sauce = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.85, 0.85, 0.04, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xcc4125, roughness: 0.6 })
+                    );
+                    sauce.position.y = 0.05;
+                    group.add(sauce);
+
+                    for (let i = 0; i < 8; i++) {
+                        const angle = (i / 8) * Math.PI * 2;
+                        const mozzarella = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.15, 16, 16),
+                            new THREE.MeshStandardMaterial({ color: 0xfffacd, roughness: 0.5 })
+                        );
+                        mozzarella.position.set(Math.cos(angle) * 0.5, 0.08, Math.sin(angle) * 0.5);
+                        group.add(mozzarella);
+
+                        const basil = new THREE.Mesh(
+                            new THREE.CircleGeometry(0.08, 8),
+                            new THREE.MeshStandardMaterial({ color: 0x228b22, side: THREE.DoubleSide })
+                        );
+                        basil.position.set(Math.cos(angle) * 0.7, 0.1, Math.sin(angle) * 0.7);
+                        basil.rotation.x = -Math.PI / 2;
+                        group.add(basil);
+                    }
+                    break;
+
+                case 'sushi':
+                    const nori = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.4, 0.4, 1.2, 32),
+                        new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.3 })
+                    );
+                    nori.rotation.x = Math.PI / 2;
+                    group.add(nori);
+
+                    const rice = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.45, 0.45, 1.25, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9 })
+                    );
+                    rice.rotation.x = Math.PI / 2;
+                    rice.position.z = 0.02;
+                    group.add(rice);
+
+                    const avocadoTop = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.35, 16, 16),
+                        new THREE.MeshStandardMaterial({ color: 0x3cb371, roughness: 0.4 })
+                    );
+                    avocadoTop.scale.set(1, 0.3, 1);
+                    avocadoTop.position.z = 0.6;
+                    group.add(avocadoTop);
+
+                    for (let i = 0; i < 20; i++) {
+                        const seed = new THREE.Mesh(
+                            new THREE.SphereGeometry(0.02, 8, 8),
+                            new THREE.MeshStandardMaterial({ color: 0x1a1a1a })
+                        );
+                        seed.position.set(
+                            (Math.random() - 0.5) * 0.5,
+                            0.1,
+                            0.55 + Math.random() * 0.2
+                        );
+                        group.add(seed);
+                    }
+                    break;
+
+                case 'donut':
+                    const donut = new THREE.Mesh(
+                        new THREE.TorusGeometry(0.6, 0.3, 16, 48),
+                        new THREE.MeshStandardMaterial({ color: 0xcd853f, roughness: 0.7 })
+                    );
+                    group.add(donut);
+
+                    const glaze = new THREE.Mesh(
+                        new THREE.TorusGeometry(0.55, 0.28, 16, 48),
+                        new THREE.MeshStandardMaterial({ color: 0xf5deb3, roughness: 0.3 })
+                    );
+                    group.add(glaze);
+
+                    const sprinkleColors = [0xff6b6b, 0x4ecdc4, 0xffd93d, 0x95e1d3, 0xf38181];
+                    for (let i = 0; i < 30; i++) {
+                        const sprinkle = new THREE.Mesh(
+                            new THREE.CapsuleGeometry(0.02, 0.12, 4, 8),
+                            new THREE.MeshStandardMaterial({ color: sprinkleColors[i % sprinkleColors.length] })
+                        );
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = 0.3 + Math.random() * 0.35;
+                        sprinkle.position.set(
+                            Math.cos(angle) * radius,
+                            0.25,
+                            Math.sin(angle) * radius
+                        );
+                        sprinkle.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+                        group.add(sprinkle);
+                    }
+                    break;
+
+                case 'coffee':
+                    const cup = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.5, 0.4, 0.9, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
+                    );
+                    group.add(cup);
+
+                    const coffee = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.45, 0.45, 0.1, 32),
+                        new THREE.MeshStandardMaterial({ color: 0x3d2314, roughness: 0.4 })
+                    );
+                    coffee.position.y = 0.35;
+                    group.add(coffee);
+
+                    const handle = new THREE.Mesh(
+                        new THREE.TorusGeometry(0.25, 0.06, 8, 16, Math.PI),
+                        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 })
+                    );
+                    handle.position.set(0.55, 0, 0);
+                    handle.rotation.z = Math.PI / 2;
+                    group.add(handle);
+
+                    const foam = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.35, 16, 16),
+                        new THREE.MeshStandardMaterial({ color: 0xfff5ee, roughness: 0.8 })
+                    );
+                    foam.position.y = 0.4;
+                    foam.scale.set(1, 0.5, 1);
+                    group.add(foam);
+
+                    for (let i = 0; i < 5; i++) {
+                        const drizzle = new THREE.Mesh(
+                            new THREE.CylinderGeometry(0.02, 0.02, 0.15, 8),
+                            new THREE.MeshStandardMaterial({ color: 0x8b4513 })
+                        );
+                        drizzle.position.set(-0.2 + i * 0.1, 0.45, 0.1);
+                        group.add(drizzle);
+                    }
+                    break;
+
+                case 'icecream':
+                    const cone = new THREE.Mesh(
+                        new THREE.ConeGeometry(0.5, 1, 32),
+                        new THREE.MeshStandardMaterial({ color: 0xd4a056, roughness: 0.8 })
+                    );
+                    cone.position.y = -0.3;
+                    group.add(cone);
+
+                    const scoop1 = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.4, 24, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xffb6c1, roughness: 0.4 })
+                    );
+                    scoop1.position.y = 0.25;
+                    group.add(scoop1);
+
+                    const scoop2 = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.35, 24, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xfffacd, roughness: 0.4 })
+                    );
+                    scoop2.position.set(0.25, 0.5, 0.1);
+                    group.add(scoop2);
+
+                    const cherry = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.12, 16, 16),
+                        new THREE.MeshStandardMaterial({ color: 0xdc143c, roughness: 0.3 })
+                    );
+                    cherry.position.set(0.1, 0.7, 0.15);
+                    group.add(cherry);
+
+                    const whipped = new THREE.Mesh(
+                        new THREE.TorusGeometry(0.25, 0.15, 8, 24),
+                        new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.9 })
+                    );
+                    whipped.position.y = 0.55;
+                    group.add(whipped);
+                    break;
+            }
+
+            group.rotation.x = Math.PI * 0.1;
+            return group;
+        }
+
+        function createScene(container, food, isPanel = false) {
+            const scene = new THREE.Scene();
+            
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+            camera.position.set(0, 1, isPanel ? 4 : 3);
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            mainLight.position.set(2, 3, 2);
+            scene.add(mainLight);
+
+            const fillLight = new THREE.DirectionalLight(0xff6b35, 0.3);
+            fillLight.position.set(-2, 1, -2);
+            scene.add(fillLight);
+
+            const rimLight = new THREE.PointLight(0xffffff, 0.5);
+            rimLight.position.set(0, 2, -3);
+            scene.add(rimLight);
+
+            const foodGroup = createFoodGeometry(food.type, food.color);
+            scene.add(foodGroup);
+
+            const controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enablePan = false;
+            controls.minDistance = 2;
+            controls.maxDistance = 6;
+            controls.autoRotate = true;
+            controls.autoRotateSpeed = 1;
+
+            let animationId;
+            const startTime = Date.now();
+            
+            function animate() {
+                animationId = requestAnimationFrame(animate);
+                
+                const elapsed = (Date.now() - startTime) / 1000;
+                foodGroup.position.y = Math.sin(elapsed * 1.5) * 0.05;
+                
+                controls.update();
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+
+            return { scene, renderer, camera, controls, animate: animationId };
+        }
+
+        function initFoodCards() {
+            const grid = document.getElementById('foodGrid');
+            
+            foods.forEach((food, index) => {
+                const card = document.createElement('div');
+                card.className = 'food-card';
+                card.innerHTML = `
+                    <div class="canvas-container" id="canvas-${food.id}"></div>
+                    <div class="food-info">
+                        <h3 class="food-name">${food.name}</h3>
+                        <div class="food-price">${food.price}</div>
+                        <p class="food-desc">Click to explore in 3D</p>
+                    </div>
+                    <div class="tap-hint">Tap to view details</div>
+                `;
+                
+                card.addEventListener('click', () => openPanel(food));
+                grid.appendChild(card);
+
+                setTimeout(() => {
+                    const container = document.getElementById(`canvas-${food.id}`);
+                    if (container) {
+                        createScene(container, food);
+                    }
+                }, 100 * (index + 1));
+            });
+        }
+
+        function openPanel(food) {
+            selectedFood = food;
+            document.getElementById('panelName').textContent = food.name;
+            document.getElementById('panelPrice').textContent = food.price;
+            document.getElementById('panelDesc').textContent = food.description;
+            
+            const ingredientsList = document.getElementById('ingredientsList');
+            ingredientsList.innerHTML = food.ingredients.map(ing => 
+                `<span class="ingredient-tag">${ing}</span>`
+            ).join('');
+
+            const panel3D = document.getElementById('panel3DView');
+            panel3D.innerHTML = '';
+            
+            setTimeout(() => {
+                const result = createScene(panel3D, food, true);
+                activeScene = result;
+            }, 50);
+
+            document.getElementById('panelOverlay').classList.add('active');
+            document.getElementById('detailPanel').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePanel() {
+            document.getElementById('panelOverlay').classList.remove('active');
+            document.getElementById('detailPanel').classList.remove('active');
+            document.body.style.overflow = '';
+            
+            if (activeScene) {
+                cancelAnimationFrame(activeScene.animate);
+                activeScene.renderer.dispose();
+                activeScene = null;
+            }
+            selectedFood = null;
+        }
+
+        document.getElementById('panelClose').addEventListener('click', closePanel);
+        document.getElementById('panelOverlay').addEventListener('click', closePanel);
+
+        document.getElementById('addToCartBtn').addEventListener('click', () => {
+            if (selectedFood) {
+                cartCount++;
+                const countEl = document.getElementById('cartCount');
+                countEl.textContent = cartCount;
+                countEl.classList.remove('hidden');
+                
+                const btn = document.getElementById('addToCartBtn');
+                btn.innerHTML = '<span>✓</span> Added to Cart!';
+                btn.style.background = 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)';
+                
+                setTimeout(() => {
+                    closePanel();
+                    btn.innerHTML = '<span>🛒</span> Add to Cart';
+                    btn.style.background = '';
+                }, 1000);
+            }
+        });
+
+        initFoodCards();
+    </script>
+</body>
+</html>

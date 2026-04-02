@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | DIGITAL 3D MENU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; background: #0a0a0a; }
+        .font-display { font-family: 'Space Grotesk', sans-serif; }
+        .glass { background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(20px); }
+    </style>
+</head>
+<body class="min-h-screen">
+    <nav class="glass border-b border-orange-500/10 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-400 flex items-center justify-center text-xl font-bold font-display">D</div>
+                <span class="text-2xl font-bold font-display">DIGITAL <span class="text-orange-500">3D MENU</span></span>
+            </a>
+            <a href="/" class="px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 transition text-sm">← Back to Menu</a>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-10">
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="md:col-span-1">
+                <div class="glass rounded-2xl p-6 text-center border border-orange-500/10">
+                    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-orange-500 to-orange-400 flex items-center justify-center text-4xl font-bold mx-auto mb-4 font-display">
+                        {{ user.username[0]|upper }}
+                    </div>
+                    <h2 class="text-xl font-bold font-display">{{ user.username }}</h2>
+                    <p class="text-gray-400 text-sm">{{ user.email }}</p>
+                    <p class="text-gray-500 text-xs mt-2">Member since {{ user.created_at.strftime('%B %Y') }}</p>
+                    <a href="{{ url_for('logout') }}" class="block mt-6 px-4 py-2 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 transition text-center text-sm">Logout</a>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2 space-y-6">
+                <div class="glass rounded-2xl p-6 border border-orange-500/10">
+                    <h3 class="text-xl font-bold font-display mb-4">Edit Profile</h3>
+                    <form method="POST" class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Username</label>
+                            <input type="text" name="username" value="{{ user.username }}" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 focus:border-orange-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Phone</label>
+                            <input type="text" name="phone" value="{{ user.phone or '' }}" placeholder="Your phone number" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 focus:border-orange-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-400 mb-2">Delivery Address</label>
+                            <textarea name="address" placeholder="Your delivery address" rows="2" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 focus:border-orange-500 outline-none">{{ user.address or '' }}</textarea>
+                        </div>
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-400 font-semibold">Save Changes</button>
+                    </form>
+                </div>
+                
+                <div class="glass rounded-2xl p-6 border border-orange-500/10">
+                    <h3 class="text-xl font-bold font-display mb-4">Your Orders</h3>
+                    <div id="ordersList" class="space-y-4">
+                        <p class="text-gray-400 text-center py-8">Loading orders...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function loadOrders() {
+            try {
+                const res = await fetch('/api/orders');
+                const orders = await res.json();
+                const container = document.getElementById('ordersList');
+                if (orders.length === 0) {
+                    container.innerHTML = '<p class="text-gray-400 text-center py-8">No orders yet. <a href="/" class="text-orange-500">Start ordering!</a></p>';
+                    return;
+                }
+                container.innerHTML = orders.map(o => `
+                    <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-semibold">Order #${o.id}</span>
+                            <span class="px-2 py-1 rounded-full text-xs ${o.status === 'completed' ? 'bg-green-500/20 text-green-500' : 'bg-orange-500/20 text-orange-500'}">${o.status}</span>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-2">${new Date(o.created_at).toLocaleDateString()}</p>
+                        <p class="text-orange-500 font-bold">₹${o.total.toFixed(0)}</p>
+                    </div>`).join('');
+            } catch(e) {
+                document.getElementById('ordersList').innerHTML = '<p class="text-gray-400 text-center py-8">Failed to load orders</p>';
+            }
+        }
+        loadOrders();
+    </script>
+</body>
+</html>
