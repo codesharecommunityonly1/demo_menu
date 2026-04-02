@@ -221,7 +221,7 @@ foods_data = [
         ],
         "category": "Indian Curries",
         "calories": 340,
-        "prep_time": 20,
+        "prep_time": "20 min",
         "rating": 4.7,
         "reviews": 167,
         "badge": "Healthy Choice",
@@ -394,17 +394,19 @@ foods_data = [
 ]
 
 categories = [
-    {"id": "all", "name": "All"},
-    {"id": "Indian Biryani", "name": "Biryani"},
-    {"id": "Indian Curries", "name": "Curries"},
-    {"id": "Indian Tandoor", "name": "Tandoor"},
-    {"id": "Indian Snacks", "name": "Snacks"},
-    {"id": "Indian Breads", "name": "Breads"},
-    {"id": "South Indian", "name": "South Indian"},
-    {"id": "Indian Drinks", "name": "Drinks"},
-    {"id": "Indian Desserts", "name": "Desserts"},
-    {"id": "Indo-Chinese", "name": "Indo-Chinese"},
+    {"id": "all", "name": "All", "icon": "🍽️"},
+    {"id": "Indian Biryani", "name": "Biryani", "icon": "🍚"},
+    {"id": "Indian Curries", "name": "Curries", "icon": "🍛"},
+    {"id": "Indian Tandoor", "name": "Tandoor", "icon": "🔥"},
+    {"id": "Indian Snacks", "name": "Snacks", "icon": "🥟"},
+    {"id": "Indian Breads", "name": "Breads", "icon": "🫓"},
+    {"id": "South Indian", "name": "South Indian", "icon": "🥞"},
+    {"id": "Indian Drinks", "name": "Drinks", "icon": "🥛"},
+    {"id": "Indian Desserts", "name": "Desserts", "icon": "🍰"},
+    {"id": "Indo-Chinese", "name": "Indo-Chinese", "icon": "🍜"},
 ]
+
+cart = defaultdict(int)
 
 
 def get_filtered_foods(category, search):
@@ -429,52 +431,103 @@ def generate_food_card(food):
         <h3>{food["name"]}</h3>
         <p class="desc">{food["description"][:60]}...</p>
         <div class="price-row">
-            <span class="price">${food["price"]}</span>
-            <span class="original">${food["original_price"]}</span>
+            <span class="price">₹{food["price"]}</span>
+            <span class="original">₹{food["original_price"]}</span>
         </div>
         <div class="rating">★ {food["rating"]} ({food["reviews"]})</div>
-    </div>'''
+    </div>
+    '''
 
 
 def render_menu(category, search):
     foods = get_filtered_foods(category, search)
     cards = "".join([generate_food_card(f) for f in foods])
-    return f'<div class="menu-grid">{cards}</div>'
+    return f"""
+    <div class="menu-grid">
+        {cards}
+    </div>
+    """
 
 
 css = """
-:root { --primary: #ff6b35; --accent: #f7c59f; }
-body { font-family: "Segoe UI", sans-serif; background: linear-gradient(135deg, #1a1a2e, #16213e); color: #fafafa; margin: 0; padding: 0; }
-.header { background: linear-gradient(90deg, #ff6b35, #ff8c42); padding: 20px; text-align: center; }
+:root {
+    --primary: #ff6b35;
+    --secondary: #004e89;
+    --accent: #f7c59f;
+    --dark: #1a1a2e;
+    --light: #fafafa;
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: var(--light);
+    margin: 0;
+    padding: 0;
+}
+.header {
+    background: linear-gradient(90deg, var(--primary), #ff8c42);
+    padding: 20px;
+    text-align: center;
+}
 .header h1 { margin: 0; font-size: 2.5em; }
-.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
-.food-card { background: rgba(255,255,255,0.1); border-radius: 15px; padding: 15px; transition: all 0.3s; }
+.header p { margin: 5px 0 0; opacity: 0.9; }
+.search-bar { padding: 15px; background: rgba(255,255,255,0.1); }
+.search-bar input {
+    width: 100%; padding: 12px 20px; border: none; border-radius: 25px; font-size: 16px;
+}
+.categories { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; justify-content: center; }
+.cat-btn {
+    padding: 10px 20px; border: none; border-radius: 20px; background: rgba(255,255,255,0.15);
+    color: white; cursor: pointer; font-size: 14px;
+}
+.cat-btn:hover { background: var(--primary); }
+.menu-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; padding: 20px;
+}
+.food-card {
+    background: rgba(255,255,255,0.1); border-radius: 15px; padding: 15px;
+    transition: all 0.3s;
+}
 .food-card:hover { transform: translateY(-5px); }
 .food-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 10px; }
-.food-card .badge { background: var(--primary); padding: 5px 12px; border-radius: 15px; font-size: 12px; display: inline-block; margin-top: 10px; }
+.food-card .badge {
+    position: absolute; top: 25px; left: 25px; background: var(--primary);
+    padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold;
+}
 .food-card h3 { margin: 10px 0 5px; color: var(--accent); }
 .food-card .desc { font-size: 13px; opacity: 0.8; }
-.price-row { display: flex; gap: 10px; margin: 10px 0; }
+.price-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
 .price { font-size: 1.4em; font-weight: bold; color: var(--primary); }
 .original { text-decoration: line-through; opacity: 0.6; }
-.rating { color: #ffd700; }
+.rating { color: #ffd700; margin-bottom: 10px; }
 """
 
 with gr.Blocks(css=css, theme=gr.themes.Soft()) as demo:
-    gr.HTML('<div class="header"><h1>🍛 DIGITAL 3D MENU</h1></div>')
+    gr.HTML("""
+        <div class="header">
+            <h1>🍛 DIGITAL 3D MENU</h1>
+            <p>Interactive Indian Food Experience</p>
+        </div>
+    """)
+
     with gr.Row():
-        cat_dd = gr.Dropdown(
+        category_dropdown = gr.Dropdown(
             choices=[c["name"] for c in categories], value="All", label="Category"
         )
-        search_in = gr.Textbox(placeholder="Search food...", label="Search")
-    menu_out = gr.HTML()
+        search_input = gr.Textbox(
+            placeholder="Search delicious food...", label="Search"
+        )
 
-    def upd_menu(cat, srch):
-        cid = next((c["id"] for c in categories if c["name"] == cat), "all")
-        return render_menu(cid, srch)
+    menu_output = gr.HTML()
 
-    cat_dd.change(upd_menu, [cat_dd, search_in], menu_out)
-    search_in.change(upd_menu, [cat_dd, search_in], menu_out)
-    demo.load(lambda: upd_menu("All", ""), None, menu_out)
+    def update_menu(cat, search):
+        cat_id = next((c["id"] for c in categories if c["name"] == cat), "all")
+        return render_menu(cat_id, search)
+
+    category_dropdown.change(
+        update_menu, [category_dropdown, search_input], menu_output
+    )
+    search_input.change(update_menu, [category_dropdown, search_input], menu_output)
+    demo.load(lambda: update_menu("All", ""), inputs=None, outputs=menu_output)
 
 demo.launch()
