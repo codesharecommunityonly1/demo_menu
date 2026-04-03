@@ -1384,7 +1384,7 @@ def get_suggestions(search, limit=6):
     return suggestions
 
 
-def filter_menu(category, search):
+def filter_menu(category, price_filter, search):
     filtered = menu_items
 
     if category and category != "All":
@@ -1398,6 +1398,12 @@ def filter_menu(category, search):
             if search_lower in item.get("name", "").lower()
             or search_lower in item.get("description", "").lower()
         ]
+
+    # Sort by price
+    if price_filter == "Low to High":
+        filtered = sorted(filtered, key=lambda x: x.get("price", 0))
+    else:
+        filtered = sorted(filtered, key=lambda x: x.get("price", 0), reverse=True)
 
     # If no exact matches, show suggestions
     if not filtered and search:
@@ -1465,6 +1471,13 @@ with gr.Blocks(css=css, title="Restaurant Menu") as demo:
             category_dd = gr.Dropdown(
                 choices=categories, value="All", label="Category", interactive=True
             )
+        with gr.Column(scale=1):
+            price_filter = gr.Dropdown(
+                choices=["Low to High", "High to Low"],
+                value="Low to High",
+                label="Price Filter",
+                interactive=True,
+            )
         with gr.Column(scale=2):
             search_input = gr.Textbox(
                 placeholder="Search dishes...", label="Search", interactive=True
@@ -1472,8 +1485,15 @@ with gr.Blocks(css=css, title="Restaurant Menu") as demo:
 
     menu_output = gr.HTML()
 
-    category_dd.change(filter_menu, [category_dd, search_input], menu_output)
-    search_input.change(filter_menu, [category_dd, search_input], menu_output)
-    demo.load(lambda: filter_menu("All", ""), None, menu_output)
+    category_dd.change(
+        filter_menu, [category_dd, price_filter, search_input], menu_output
+    )
+    price_filter.change(
+        filter_menu, [category_dd, price_filter, search_input], menu_output
+    )
+    search_input.change(
+        filter_menu, [category_dd, price_filter, search_input], menu_output
+    )
+    demo.load(lambda: filter_menu("All", "Low to High", ""), None, menu_output)
 
 demo.launch()
