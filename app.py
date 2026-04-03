@@ -1362,6 +1362,28 @@ function hideModal() {
 )
 
 
+def get_suggestions(search, limit=6):
+    """Get similar item suggestions based on search query"""
+    if not search:
+        return []
+    search = search.lower()
+    suggestions = []
+
+    for item in menu_items:
+        name = item.get("name", "").lower()
+        # Check for partial match, similar sounds, or related words
+        if (
+            search in name
+            or any(s in name for s in search.split() if len(s) > 2)
+            or any(name.startswith(s) for s in search.split() if len(s) > 2)
+        ):
+            suggestions.append(item)
+            if len(suggestions) >= limit:
+                break
+
+    return suggestions
+
+
 def filter_menu(category, search):
     filtered = menu_items
 
@@ -1369,13 +1391,35 @@ def filter_menu(category, search):
         filtered = [item for item in filtered if item.get("category") == category]
 
     if search:
-        search = search.lower()
+        search_lower = search.lower()
         filtered = [
             item
             for item in filtered
-            if search in item.get("name", "").lower()
-            or search in item.get("description", "").lower()
+            if search_lower in item.get("name", "").lower()
+            or search_lower in item.get("description", "").lower()
         ]
+
+    # If no exact matches, show suggestions
+    if not filtered and search:
+        suggestions = get_suggestions(search, 6)
+        if suggestions:
+            html = f"""
+            <div style="text-align:center;color:#ff6b35;padding:20px;font-size:16px;">
+                No exact matches found. Showing suggestions:
+            </div>
+            <div class="menu-grid">"""
+            for item in suggestions:
+                html += f'''
+                <div class="food-card">
+                    <img src="{item["image"]}" alt="{item["name"]}">
+                    <span class="badge">{item["category"]}</span>
+                    <h3>{item["name"]}</h3>
+                    <p class="desc">{item["description"][:50]}...</p>
+                    <div class="price">Rs. {item["price"]}</div>
+                    <button class="view-3d" onclick="showModal('{item["id"]}')">View 3D</button>
+                </div>'''
+            html += "</div>"
+            return html
 
     if not filtered:
         return '<div style="text-align:center;color:#888;padding:40px;font-size:18px;">No dishes found</div>'
