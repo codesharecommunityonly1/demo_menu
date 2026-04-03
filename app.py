@@ -1444,7 +1444,7 @@ with gr.Blocks(css=css, title="Restaurant Menu") as demo:
 
     gr.HTML("""
         <div class="header">
-            <h1>RESTAURANT MENU</h1>
+            <h1>3D RESTAURANT MENU</h1>
             <p>Click on any dish to view 3D Model</p>
         </div>
         
