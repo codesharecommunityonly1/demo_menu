@@ -412,4 +412,7 @@ with gr.Blocks(css=css, title="3D Restaurant Menu") as demo:
     )
     demo.load(lambda: filter_menu("All", "Low to High", ""), None, menu_output)
 
-demo.launch()
+app = demo
+
+if __name__ == "__main__":
+    demo.launch()
