@@ -243,11 +243,16 @@
             <!-- Category Filter -->
             <div class="flex flex-wrap gap-3 justify-center mb-8">
                 <button onclick="filterMenu('all', this)" class="category-btn active px-5 py-2.5 rounded-full bg-primary text-white font-medium">All</button>
-                <button onclick="filterMenu('biryani', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Biryani</button>
-                <button onclick="filterMenu('curry', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Curry</button>
-                <button onclick="filterMenu('tandoor', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Tandoor</button>
-                <button onclick="filterMenu('starters', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Starters</button>
+                <button onclick="filterMenu('starter', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Starter</button>
+                <button onclick="filterMenu('noodles', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Noodles</button>
+                <button onclick="filterMenu('rice', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Rice</button>
+                <button onclick="filterMenu('soup', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Soup</button>
+                <button onclick="filterMenu('chinese', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Chinese</button>
+                <button onclick="filterMenu('main', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Main Course</button>
                 <button onclick="filterMenu('breads', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Breads</button>
+                <button onclick="filterMenu('beverages', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Beverages</button>
+                <button onclick="filterMenu('desert', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Desert</button>
+                <button onclick="filterMenu('extras', this)" class="category-btn px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 font-medium">Extras</button>
             </div>
 
             <!-- Menu Grid -->
@@ -335,38 +340,159 @@
     </footer>
 
     <script>
-        // Menu Data JSON - Easy to update
+        // Full Menu Data - 142 Items
         const menuData = [
-            // Biryani
-            {id: "chicken-biryani", name: "Chicken Biryani", price: 299, originalPrice: 399, category: "biryani", veg: false, popular: true, description: "Aromatic basmati rice with tender chicken & spices", image: "🍚"},
-            {id: "mutton-biryani", name: "Mutton Biryani", price: 399, originalPrice: 499, category: "biryani", veg: false, popular: true, description: "Slow-cooked mutton with basmati rice", image: "🍚"},
-            {id: "veg-biryani", name: "Veg Biryani", price: 249, originalPrice: 299, category: "biryani", veg: true, popular: false, description: "Mixed vegetables with aromatic rice", image: "🍚"},
-            {id: "paneer-biryani", name: "Paneer Biryani", price: 279, originalPrice: 349, category: "biryani", veg: true, popular: false, description: "Creamy paneer with fragrant rice", image: "🍚"},
-            
-            // Curry
-            {id: "butter-chicken", name: "Butter Chicken", price: 320, originalPrice: 399, category: "curry", veg: false, popular: true, description: "Creamy tomato gravy with tender chicken", image: "🥘"},
-            {id: "kadai-paneer", name: "Kadai Paneer", price: 249, originalPrice: 299, category: "curry", veg: true, popular: false, description: "Paneer in onion gravy", image: "🥘"},
-            {id: "palak-paneer", name: "Palak Paneer", price: 229, originalPrice: 279, category: "curry", veg: true, popular: false, description: "Paneer in spinach gravy", image: "🥘"},
-            {id: "dal-makhani", name: "Dal Makhani", price: 199, originalPrice: 249, category: "curry", veg: true, popular: false, description: "Creamy black lentils", image: "🥘"},
-            {id: "paneer-butter-masala", name: "Paneer Butter Masala", price: 269, originalPrice: 329, category: "curry", veg: true, popular: true, description: "Rich & creamy paneer dish", image: "🥘"},
-            
-            // Tandoor
-            {id: "chicken-tikka", name: "Chicken Tikka", price: 349, originalPrice: 429, category: "tandoor", veg: false, popular: true, description: "Tandoor-roasted chicken", image: "🍗"},
-            {id: "paneer-tikka", name: "Paneer Tikka", price: 299, originalPrice: 379, category: "tandoor", veg: true, popular: false, description: "Marinated paneer grilled", image: "🧀"},
-            {id: "chicken-seekh", name: "Chicken Seekh Kebab", price: 279, originalPrice: 349, category: "tandoor", veg: false, popular: true, description: "Minced chicken kebabs", image: "🍢"},
-            {id: "veg-platter", name: "Veg Platter", price: 399, originalPrice: 499, category: "tandoor", veg: true, popular: false, description: "Assorted veg kebabs", image: "🥗"},
-            
-            // Starters
-            {id: "paneer-65", name: "Paneer 65", price: 199, originalPrice: 249, category: "starters", veg: true, popular: false, description: "Crispy paneer fried", image: "🧀"},
-            {id: "chicken-65", name: "Chicken 65", price: 229, originalPrice: 279, category: "starters", veg: false, popular: false, description: "Spicy chicken fries", image: "🍗"},
-            {id: "veg-manchurian", name: "Veg Manchurian", price: 149, originalPrice: 199, category: "starters", veg: true, popular: false, description: "Vegetable balls in sauce", image: "🥗"},
-            {id: "french-fries", name: "French Fries", price: 99, originalPrice: 149, category: "starters", veg: true, popular: false, description: "Crispy golden fries", image: "🥔"},
-            
-            // Breads
-            {id: "garlic-naan", name: "Garlic Naan", price: 60, originalPrice: 80, category: "breads", veg: true, popular: false, description: "Naan with garlic", image: "🫓"},
-            {id: "butter-naan", name: "Butter Naan", price: 50, originalPrice: 70, category: "breads", veg: true, popular: false, description: "Soft butter naan", image: "🫓"},
-            {id: " roti", name: "Tandoori Roti", price: 30, originalPrice: 40, category: "breads", veg: true, popular: false, description: "Whole wheat bread", image: "🫓"},
-            {id: "laccha-paratha", name: "Laccha Paratha", price: 70, originalPrice: 90, category: "breads", veg: true, popular: false, description: "Layered paratha", image: "🫓"},
+            // STARTER (1-21)
+            {id: "paneer65", name: "Paneer 65", price: 180, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"},
+            {id: "honeychillypotato", name: "Honey Chilly Potato", price: 140, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7"},
+            {id: "americanchoupsy", name: "American Choupsy", price: 170, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "crispychillybabycorn", name: "Crispy Chilly Baby Corn", price: 160, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1617196038435-0a2f98b5eb2d"},
+            {id: "frenchfries", name: "French Fries", price: 80, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5"},
+            {id: "dragonpaneer", name: "Dragon Paneer", price: 180, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "vegmanchurian", name: "Veg Manchurian", price: 110, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1630409346824-4f0e7b080087"},
+            {id: "paneermanchurian", name: "Paneer Manchurian", price: 160, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerchilli", name: "Paneer Chilli", price: 160, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1628294896516-1f5c2a9e6f41"},
+            {id: "crispychillymushroom", name: "Crispy Chilly Mushroom", price: 140, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "veglolipop", name: "Veg Lolipop", price: 150, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "gobi65", name: "Gobi 65", price: 100, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1617196038435-0a2f98b5eb2d"},
+            {id: "vegspringroll", name: "Veg Spring Roll", price: 150, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1604908811749-7b9c5bde9e6b"},
+            {id: "paneerspringroll", name: "Paneer Spring Roll", price: 190, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerroll", name: "Paneer Roll", price: 90, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "vegroll", name: "Veg Roll", price: 60, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mushroomsaltpepper", name: "Mushroom Salt & Pepper", price: 120, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mushroom65", name: "Mushroom 65", price: 140, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "cornsaltpepper", name: "Corn Salt & Pepper", price: 150, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "onionpakora", name: "Onion Pakora", price: 80, category: "starter", veg: true, image: "https://images.unsplash.com/photo-1633945274309-2b5c0b3a4a1d"},
+            {id: "paneerpakora", name: "Paneer Pakora", price: 150, category: "starter", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+
+            // NOODLES (22-28)
+            {id: "vegnoodles", name: "Veg Noodles", price: 90, category: "noodles", veg: true, image: "https://images.unsplash.com/photo-1585032226651-759b368d7246"},
+            {id: "veghakkanoodles", name: "Veg Hakka Noodles", price: 100, category: "noodles", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneernoodles", name: "Paneer Noodles", price: 130, category: "noodles", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "chilligarlicnoodles", name: "Chilli Garlic Noodles", price: 110, category: "noodles", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "schezwannoodles", name: "Schezwan Noodles", price: 110, category: "noodles", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "manchuriannoodles", name: "Manchurian Noodles", price: 130, category: "noodles", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "rkadharspecialnoodles", name: "RK Adarsh Special Noodles", price: 160, category: "noodles", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+
+            // RICE (29-41)
+            {id: "steamrice", name: "Steam Rice", price: 60, category: "rice", veg: true, image: "https://images.unsplash.com/photo-1604908177225-6b1d8d26ab9a"},
+            {id: "jeerarice", name: "Jeera Rice", price: 80, category: "rice", veg: true, image: "https://images.unsplash.com/photo-1617191518500-0d7d1c3b9c5e"},
+            {id: "vegfriedrice", name: "Veg Fried Rice", price: 110, category: "rice", veg: true, image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b"},
+            {id: "paneerfriedrice", name: "Paneer Fried Rice", price: 150, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mushroomfriedrice", name: "Mushroom Fried Rice", price: 140, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "schezwanfriedrice", name: "Schezwan Fried Rice", price: 120, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "rkadharspecialfriedrice", name: "RK Adarsh Special Fried Rice", price: 190, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "vegpulao", name: "Veg Pulao", price: 140, category: "rice", veg: true, image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d"},
+            {id: "kashmiripulao", name: "Kashmiri Pulao", price: 200, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerpulao", name: "Paneer Pulao", price: 180, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "greenpeaspulao", name: "Green Peas Pulao", price: 120, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "veghyderabadidumbiryani", name: "Veg Hyderabadi Dum Biryani", price: 180, category: "rice", veg: true, image: "https://images.unsplash.com/photo-1603894584373-5ac82b2ae398"},
+            {id: "paneerbiryani", name: "Paneer Biryani", price: 220, category: "rice", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+
+            // SOUP (42-47)
+            {id: "hotandsoursoup", name: "Hot & Sour Soup", price: 60, category: "soup", veg: true, image: "https://images.unsplash.com/photo-1604909052743-94e838986d24"},
+            {id: "lemoncoriandersoup", name: "Lemon Coriander Soup", price: 50, category: "soup", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "clearsoup", name: "Clear Soup", price: 40, category: "soup", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "sweetcornsoup", name: "Sweet Corn Soup", price: 60, category: "soup", veg: true, image: "https://images.unsplash.com/photo-1603105037880-880cd4edfb0d"},
+            {id: "vegmanchowsoup", name: "Veg Manchow Soup", price: 70, category: "soup", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "tomatosoup", name: "Tomato Soup", price: 40, category: "soup", veg: true, image: "https://images.unsplash.com/photo-1547592180-85f173990554"},
+
+            // CHINESE MAIN COURSE (48-52)
+            {id: "vegmanchuriangravy", name: "Veg Manchurian Gravy", price: 140, category: "chinese", veg: true, image: "https://images.unsplash.com/photo-1630409346824-4f0e7b080087"},
+            {id: "paneermanchuriangravy", name: "Paneer Manchurian Gravy", price: 180, category: "chinese", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerchilligravy", name: "Paneer Chilli Gravy", price: 200, category: "chinese", veg: true, image: "https://images.unsplash.com/photo-1628294896516-1f5c2a9e6f41"},
+            {id: "mushroomchilligravy", name: "Mushroom Chilli Gravy", price: 190, category: "chinese", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "babycornchillygravy", name: "Baby Corn Chilly Gravy", price: 220, category: "chinese", veg: true, image: "https://images.unsplash.com/photo-1617196038435-0a2f98b5eb2d"},
+
+            // MAIN COURSE (81-115)
+            {id: "plaindal", name: "Plain Dal", price: 60, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "dalfry", name: "Dal Fry", price: 80, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "daltadka", name: "Dal Tadka", price: 100, category: "main", veg: true, image: "https://images.unsplash.com/photo-1626500155537-93690c240a8c"},
+            {id: "dalpakhani", name: "Dal Makhani", price: 160, category: "main", veg: true, image: "https://images.unsplash.com/photo-1626132647523-66f4d0a63c6e"},
+            {id: "rajamamasala", name: "Rajma Masala", price: 180, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneermasala", name: "Paneer Masala", price: 200, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerbuttermasala", name: "Paneer Butter Masala", price: 220, category: "main", veg: true, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950"},
+            {id: "paneermushroommasala", name: "Paneer Mushroom Masala", price: 190, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mixveg", name: "Mix Veg", price: 160, category: "main", veg: true, image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"},
+            {id: "sahipaneer", name: "Sahi Paneer", price: 240, category: "main", veg: true, image: "https://images.unsplash.com/photo-1631452180769-0c4c0a2c8f2b"},
+            {id: "palakpaneer", name: "Palak Paneer", price: 180, category: "main", veg: true, image: "https://images.unsplash.com/photo-1617191518607-0c7f4f6d9c1e"},
+            {id: "mushroommasala", name: "Mushroom Masala", price: 180, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "cornpalak", name: "Corn Palak", price: 190, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerbhurji", name: "Paneer Bhurji", price: 220, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "aloogreenmatar", name: "Aloo Green Matar", price: 140, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "vegkolhapuri", name: "Veg Kolhapuri", price: 180, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "kashmirialoodum", name: "Kashmiri Aloo Dum", price: 220, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "aloodummasala", name: "Aloo Dum Masala", price: 140, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "aloogobimasala", name: "Aloo Gobi Masala", price: 150, category: "main", veg: true, image: "https://images.unsplash.com/photo-1601050690117-94f5f6fa3bd7"},
+            {id: "paneerpasanda", name: "Paneer Pasanda", price: 190, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneertikkamasala", name: "Paneer Tikka Masala", price: 220, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerbuttertikkamasala", name: "Paneer Butter Tikka Masala", price: 250, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "kadhaipaneer", name: "Kadhai Paneer", price: 200, category: "main", veg: true, image: "https://images.unsplash.com/photo-1628294896516-1f5c2a9e6f41"},
+            {id: "paneerdopyaza", name: "Paneer Do Pyaza", price: 220, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerlababdar", name: "Paneer Lababdar", price: 220, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneermalaikofta", name: "Paneer Malai Kofta", price: 200, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerkhurchan", name: "Paneer Khurchan", price: 220, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "babycornmasala", name: "Baby Corn Masala", price: 180, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "kadhaimushroom", name: "Kadhai Mushroom", price: 190, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "vegjalfrezi", name: "Veg Jalfrezi", price: 160, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "nargisikofta", name: "Nargisi Kofta", price: 180, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerbegambahar", name: "Paneer Begam Bahar", price: 230, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mushroomdopyaza", name: "Mushroom Do Pyaza", price: 190, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mushroomatarmasala", name: "Mushroom Matar Masala", price: 200, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerkolhapuri", name: "Paneer Kolhapuri", price: 240, category: "main", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+
+            // BREADS (63-80)
+            {id: "tawaroti", name: "Tawa Roti", price: 6, category: "breads", veg: true, image: "https://images.unsplash.com/photo-1626078299039-6b1a3f1f6fba"},
+            {id: "tawabutterroti", name: "Tawa Butter Roti", price: 12, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "tandooriroti", name: "Tandoori Roti", price: 15, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "tandooributterroti", name: "Tandoori Butter Roti", price: 20, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "nan", name: "Nan", price: 35, category: "breads", veg: true, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950"},
+            {id: "butternan", name: "Butter Nan", price: 45, category: "breads", veg: true, image: "https://images.unsplash.com/photo-1601050690597-df0568f70950"},
+            {id: "garlicnan", name: "Garlic Nan", price: 50, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "whitetailnan", name: "White Til Nan", price: 45, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "kashmirinan", name: "Kashmiri Nan", price: 60, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "onionkulcha", name: "Onion Kulcha", price: 45, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "masalakulcha", name: "Masala Kulcha", price: 60, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "paneerkulcha", name: "Paneer Kulcha", price: 60, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "lacchaparatha", name: "Laccha Paratha", price: 35, category: "breads", veg: true, image: "https://images.unsplash.com/photo-1627308595171-d1b5d67129c4"},
+            {id: "alooparatha", name: "Aloo Paratha", price: 35, category: "breads", veg: true, image: "https://images.unsplash.com/photo-1601050690117-94f5f6fa3bd7"},
+            {id: "paneerparatha", name: "Paneer Paratha", price: 60, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "gobiparatha", name: "Gobi Paratha", price: 40, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "missi_roti", name: "Missi Roti", price: 40, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "stuffednan", name: "Stuffed Nan", price: 70, category: "breads", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+
+            // HOT & COLD BEVERAGES (116-128)
+            {id: "tea", name: "Tea", price: 20, category: "beverages", veg: true, image: "https://images.unsplash.com/photo-1511920170033-f8396924c348"},
+            {id: "coffee", name: "Coffee", price: 30, category: "beverages", veg: true, image: "https://images.unsplash.com/photo-1509042239860-f550ce710b93"},
+            {id: "coldcoffee", name: "Cold Coffee", price: 80, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "coldcoffewithicecream", name: "Cold Coffee with Ice-cream", price: 110, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "mineralwater", name: "Mineral Water", price: 20, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "sweetlassi", name: "Sweet Lassi", price: 40, category: "beverages", veg: true, image: "https://images.unsplash.com/photo-1626074353765-517a681e40be"},
+            {id: "buttermilk", name: "Butter Milk (Chaanch)", price: 40, category: "beverages", veg: true, image: "https://images.unsplash.com/photo-1626074353765-517a681e40be"},
+            {id: "colddrink", name: "Cold Drink", price: 40, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "virginmojito", name: "Virgin Mojito", price: 70, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "bluelime", name: "Blue Lime", price: 75, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "fruitpunch", name: "Fruit Punch", price: 90, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "freshlimesda", name: "Fresh Lime Soda", price: 60, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "masalacoke", name: "Masala Coke", price: 50, category: "beverages", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+
+            // DESERT (129-133)
+            {id: "gulabjamun", name: "Gulab Jamun", price: 20, category: "desert", veg: true, image: "https://images.unsplash.com/photo-1604908177225-6b1d8d26ab9a"},
+            {id: "rasgulla", name: "Rasgulla", price: 16, category: "desert", veg: true, image: "https://images.unsplash.com/photo-1633945274309-2b5c0b3a4a1d"},
+            {id: "rajbhog", name: "Rajbhog", price: 20, category: "desert", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "kesarrasmalai", name: "Kesar Rasmalai", price: 50, category: "desert", veg: true, image: "https://images.unsplash.com/photo-1626132647523-66f4d0a63c6e"},
+            {id: "icecream", name: "Ice-cream", price: 40, category: "desert", veg: true, image: "https://images.unsplash.com/photo-1497034825429-c343d7c6a68f"},
+
+            // RAITA, SALAD & PAPAD (134-142)
+            {id: "mixraita", name: "Mix Raita", price: 40, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "boondira", name: "Boondi Raita", price: 40, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "cucumberraita", name: "Cucumber Raita", price: 30, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "greensalad", name: "Green Salad", price: 40, category: "extras", veg: true, image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c"},
+            {id: "onionsalad", name: "Onion Salad", price: 30, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "roastedpapad", name: "Roasted Papad", price: 15, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "friedpapad", name: "Fried Papad", price: 20, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "masalapapad", name: "Masala Papad", price: 40, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
+            {id: "curd", name: "Curd", price: 35, category: "extras", veg: true, image: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"},
         ];
 
         // Filter Menu
@@ -386,20 +512,17 @@
             const grid = document.getElementById('menuGrid');
             grid.innerHTML = items.map(item => `
                 <div class="dish-card bg-card rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 relative">
-                    ${item.popular ? '<div class="ribbon absolute top-0 right-0 bg-secondary px-4 py-1 text-sm font-medium text-dark z-10">Popular</div>' : ''}
                     <div class="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-5xl">
-                        ${item.image}
+                        ${item.image.startsWith('http') ? `<img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">` : item.image}
                     </div>
                     <div class="p-5">
                         <div class="flex items-center gap-2 mb-2">
-                            <span class="w-4 h-4 rounded-sm ${item.veg ? 'bg-accent' : 'bg-primary'}"></span>
-                            <span class="text-xs ${item.veg ? 'text-accent' : 'text-primary'}">${item.veg ? 'Veg' : 'Non-Veg'}</span>
+                            <span class="w-4 h-4 rounded-sm bg-accent"></span>
+                            <span class="text-xs text-accent">Veg</span>
                         </div>
                         <h3 class="font-semibold text-lg mb-1">${item.name}</h3>
-                        <p class="text-gray-400 text-sm mb-3">${item.description}</p>
                         <div class="flex items-center gap-2">
                             <span class="text-xl font-bold text-primary">₹${item.price}</span>
-                            <span class="text-sm text-gray-500 line-through">₹${item.originalPrice}</span>
                         </div>
                     </div>
                 </div>
