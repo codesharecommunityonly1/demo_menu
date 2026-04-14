@@ -39,7 +39,7 @@
             }
         }
     </script>
-    <style>
+<style>
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
         * { scrollbar-width: thin; scrollbar-color: #e63946 #1a1a2e; }
         *::-webkit-scrollbar { width: 8px; }
@@ -51,8 +51,10 @@
         .dish-card { transition: all 0.3s ease; }
         .dish-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(230, 57, 70, 0.2); }
         .ribbon { clip-path: polygon(0 0, 100% 0, 90% 50%, 100% 100%, 0 100%); }
-        .veg-badge { background: #2a9d8f; }
-        .non-veg-badge { background: #e63946; }
+        /* Dropdown styling - black text on white */
+        select option { background: white !important; color: black !important; }
+        select { background: white !important; color: black !important; }
+        .category-btn.active { background: #e63946; color: white; border-color: #e63946; }
     </style>
 
     <!-- JSON-LD Schema for Restaurant -->
