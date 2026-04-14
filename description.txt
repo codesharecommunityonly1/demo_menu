@@ -1,0 +1,104 @@
+======================================================
+        RK ADARSH RESTAURANT WEBSITE
+         FEATURES DESCRIPTION
+======================================================
+
+---
+CURRENT FEATURES:
+---
+
+1. HEADER & NAVIGATION
+   - Logo with "RK" branding
+   - Navigation links: Menu, About, Gallery, Contact
+   - Social buttons: Google Maps, Instagram, WhatsApp
+   - Responsive design (mobile + desktop)
+   - Fixed navigation bar with glass effect
+
+2. HERO SECTION
+   - Attractive gradient background
+   - Animated background effects
+   - Restaurant name display
+   - Tagline: "Best Restaurant in Town"
+   - "View Menu" button
+   - "View on Map" button with Google Maps link
+   - Statistics: Happy Customers, Dishes, Rating
+
+3. ABOUT SECTION
+   - Restaurant description
+   - Features: Fresh Ingredients, Expert Chefs, Fast Delivery
+   - Animated decorative element
+
+4. MENU SECTION
+   - Category filter buttons:
+     * All, Starter, Noodles, Rice, Soup, Chinese
+     * Main Course, Breads, Beverages, Desert, Extras
+   - 132+ menu items with prices
+   - All items marked as VEG
+   - Price display in INR (₹)
+   - Placeholder for images: "IMAGE NOT AVAILABLE TRY OUR NEW ITEM"
+   - Responsive grid layout
+   - Hover effects on cards
+
+5. GALLERY SECTION
+   - 8 grid layout with food emojis
+   - Gradient backgrounds
+   - Responsive design
+
+6. CONTACT SECTION
+   - Opening Hours display (11:00 AM - 11:00 PM)
+   - WhatsApp ordering button
+   - Visit Us section
+   - Google Maps location button
+   - Instagram follow button
+
+7. FOOTER
+   - Copyright notice (© 2026 RK Adarsh Restaurant)
+   - Clean design
+
+8. UI/UX FEATURES
+   - Dark theme (background: #1a1a2e)
+   - Color scheme:
+     * Primary: #e63946 (red)
+     * Secondary: #f4a261 (orange)
+     * Accent: #2a9d8f (green for Veg)
+   - Gradient buttons and backgrounds
+   - Hover animations
+   - Smooth transitions
+   - Responsive layouts (mobile, tablet, desktop)
+   - Custom scrollbar styling
+   - Tailwind CSS integration
+   - Google Fonts (DM Sans, Playfair Display)
+
+9. SEO FEATURES
+   - Meta tags for description, keywords
+   - Open Graph tags for social sharing
+   - JSON-LD Schema for Restaurant
+   - Local Business schema
+   - Canonical URL
+
+10. EXTERNAL LINKS
+    - Google Maps: RK ADARSH RESTAURANT location
+    - Instagram: @rkadarshrestaurant
+    - WhatsApp: Ready for integration (replace XXXXXXXXXX)
+
+======================================================
+           TECHNICAL DETAILS
+======================================================
+
+- Static HTML/CSS/JS website
+- Tailwind CSS (via CDN)
+- Three.js removed (no 3D features)
+- No backend required
+- Deployable on Vercel, Netlify, GitHub Pages
+
+======================================================
+          PLACEHOLDERS TO UPDATE
+======================================================
+
+Before going live, replace these:
+1. Phone/WhatsApp: 91XXXXXXXXXX (line 155, 181, 311)
+2. Address: "Your Street Address, City, State - PIN" (line 326)
+3. Google Maps coordinates (if needed)
+4. Opening hours (if different)
+
+======================================================
